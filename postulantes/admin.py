@@ -3,9 +3,25 @@ import datetime
 from django.contrib import admin
 from django.utils.datastructures import MultiValueDictKeyError
 from daterange_filter.filter import DateRangeFilter
+from import_export import resources 
+from import_export.admin import ImportExportActionModelAdmin
 from models import Postulante, Instalacion, Contratado, Supervisor, Cliente, Comuna, Region, Medio
 # Register your models here.
-class PostulanteAdmin(admin.ModelAdmin):
+
+class PostulanteResource(resources.ModelResource):
+    class Meta:
+        model = Postulante 
+        fields = ('fecha', 'medio1', 'nombres','apellidos', 'rut', 'domicilio', 'comuna',
+'telefono', 'email','ha_sido_condenado_o_detenido', 'motivo', 'os10', 'industrial',  'contratado', 'instalacion',  'observaciones')
+
+
+#class BookAdmin(ImportExportModelAdmin):
+#    resource_class = PostulanteResource
+
+
+class PostulanteAdmin(ImportExportActionModelAdmin):
+
+    resource_class = PostulanteResource
     list_display= ( 'fecha', 'nombres', 'apellidos',  'comuna', 'os10', 'contratado', 
 	'instalacion',  'medio1', )#  'observaciones',  ) list_filter =  (  'contratado',  ('fecha', DateRangeFilter),  'medio1', 'comuna')
 #    list_editable = ('ha_sido_condenado_o_detenido',)
